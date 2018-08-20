@@ -2,6 +2,7 @@
   "name": "acidjazz/metapi",
   "type": "library",
   "description": "Laravel API helpers",
+  "license": "APACHE",
   "keywords": [
     "Laravel", "API", "Pagination", "PHP"
   ],
