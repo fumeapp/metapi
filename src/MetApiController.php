@@ -1,6 +1,6 @@
 <?php
 
-namespace Metapi;
+namespace acidjazz\metapi;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
