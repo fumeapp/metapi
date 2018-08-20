@@ -1,0 +1,14 @@
+
+## MAC OS
+.DS_Store
+
+## VIM
+*.swp
+
+## Composer
+composer.lock
+vendor
+
+## Build
+build/
+
