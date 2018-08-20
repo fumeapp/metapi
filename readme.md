@@ -1,5 +1,7 @@
 
-![](logo.png)
+<p align="center">
+  <img src="https://github.com/acidjazz/metapi/raw/master/logo.png"/>
+</p>
 
 Enahnce your API 
 
