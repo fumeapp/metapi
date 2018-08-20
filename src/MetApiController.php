@@ -172,21 +172,21 @@ abstract class MetApiController extends BaseController
       $code = 403;
     } else {
       $response = $this->getMeta();
-      $response['query'] = $this->getQuery();
+      $response['query'] = $this->verify();
       $response['data'] = $data;
     }
 
     if ($this->request->query('callback') !== null) {
       $json = json_encode($response, JSON_PRETTY_PRINT);
       $response = ['callback' => $this->request->query('callback'),'json' => $json];
-      return response(view('jsonp', $response), 200)->header('Content-type', 'text/javascript');
+      return response(view('metapi:jsonp', $response), 200)->header('Content-type', 'text/javascript');
     }
 
     if (
       strpos($this->request->header('accept'),'text/html') !== false && 
       config('app.debug') === true && $this->request->query('json') !== 'true')
     {
-      return response(view('json', ['json' => json_encode($response, JSON_PRETTY_PRINT)]), $code);
+      return response(view('metapi:json', ['json' => json_encode($response, JSON_PRETTY_PRINT)]), $code);
     }
 
     return response()->json($response, $code, [], JSON_PRETTY_PRINT);

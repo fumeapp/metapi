@@ -22,5 +22,15 @@
     "psr-4": {
       "acidjazz\\metapi\\": "src"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "acidjazz\\metapi\\ServiceProvider"
+      ],
+      "aliases": {
+        "MetaApiController": "acidjazz\\metapi\\Facade"
+      }
+    }
   }
 }
