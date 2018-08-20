@@ -21,9 +21,6 @@
   "autoload": {
     "psr-4": {
       "acidjazz\\metapi\\": "src"
-    },
-    "files": [
-      "src/MetapiServiceProvider.php"
-    ]
+    }
   }
 }

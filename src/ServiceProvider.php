@@ -2,9 +2,7 @@
 
 namespace acidjazz\metapi;
 
-use Illuminate\Support\ServiceProvider;
-
-class MetapiServiceProvider extends ServiceProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
 
   public function boot()
