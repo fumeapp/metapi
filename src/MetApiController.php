@@ -47,7 +47,7 @@ abstract class MetApiController extends BaseController
     $this->meta[$name] = $value;
   }
 
-  protected function addPaginate($collection) {
+  protected function paginate($collection) {
 
     $paginator = new Paginator(
       $collection->total(),
