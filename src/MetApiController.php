@@ -150,7 +150,7 @@ abstract class MetApiController extends BaseController
    * returns $this->errors w/ no view, transformer and an error code of 500
    */
 
-  protected function error($key,$message) {
+  protected function error($key='unknown',$message='Unknown Error') {
 
     $this->addError($key, __($message));
 
