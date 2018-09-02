@@ -152,7 +152,9 @@ abstract class MetApiController extends BaseController
 
   protected function error($key='unknown',$message='Unknown Error') {
 
-    $this->addError($key, __($message));
+    if ($key !== 'unknown' || count($this->errors) < 1) {
+      $this->addError($key, __($message));
+    }
 
     return $this->render(['errors' => $this->errors], false, false, 500);
   }
