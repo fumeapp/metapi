@@ -49,6 +49,8 @@ abstract class MetApiController extends BaseController
 
   protected function paginate($collection) {
 
+    $collection = $collection->paginate();
+
     $paginator = new Paginator(
       $collection->total(),
       $collection->perPage(),
