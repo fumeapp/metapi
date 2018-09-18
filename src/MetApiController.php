@@ -47,9 +47,9 @@ abstract class MetApiController extends BaseController
     $this->meta[$name] = $value;
   }
 
-  protected function paginate($collection) {
+  protected function paginate($collection,$perpage=15) {
 
-    $collection = $collection->paginate();
+    $collection = $collection->paginate($perpage);
 
     $paginator = new Paginator(
       $collection->total(),
@@ -162,10 +162,20 @@ abstract class MetApiController extends BaseController
   }
 
   /**
+   * Render success
+   * @param string
+   * @return \Illuminate\Http\Response
+   */
+  protected function success($message='Successful')
+  {
+    return $this->render(['success' => true,'type' => 'success', 'message' => __($message)]);
+  }
+
+  /**
    * Final output
    * @param mixed $data data to be sent
    * @param integer $code response code, defaulting to 200
-   * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+   * @return \Illuminate\Http\Response
    */
   protected function render($data=false,$code=200) {
 
