@@ -79,7 +79,7 @@ abstract class MetApiController extends BaseController
 
   }
 
-  protected function verify() {
+  protected function verify($abort=true) {
 
     $validate = Validator::make($this->request->all(), $this->query['options']);
 
@@ -91,7 +91,11 @@ abstract class MetApiController extends BaseController
         }
       }
 
-      return false;
+      if ($abort) {
+        return $this->abort();
+      } else {
+        return false;
+      }
 
     }
 
@@ -152,13 +156,20 @@ abstract class MetApiController extends BaseController
    * returns $this->errors w/ no view, transformer and an error code of 500
    */
 
-  protected function error($key='unknown',$message='Unknown Error') {
+  protected function error($key='unknown') {
 
     if ($key !== 'unknown' || count($this->errors) < 1) {
-      $this->addError($key, __($message));
+      $this->addError($key, __($key));
     }
 
-    return $this->render(['errors' => $this->errors], false, false, 500);
+    $this->render(['errors' => $this->errors], false, 500);
+  }
+
+  /**
+   * render errors and abort
+   */
+  protected function abort() {
+    $this->render(['errors' => $this->errors], false, 500, true);
   }
 
   /**
@@ -177,7 +188,7 @@ abstract class MetApiController extends BaseController
    * @param integer $code response code, defaulting to 200
    * @return \Illuminate\Http\Response
    */
-  protected function render($data=false,$code=200) {
+  protected function render($data=false,$code=200,$abort=false) {
 
     if ($code === 403 || count($this->errors) > 0) {
       $response = $data;
@@ -191,17 +202,21 @@ abstract class MetApiController extends BaseController
     if ($this->request->query('callback') !== null) {
       $json = json_encode($response, JSON_PRETTY_PRINT);
       $response = ['callback' => $this->request->query('callback'),'json' => $json];
-      return response(view('metapi::jsonp', $response), 200)->header('Content-type', 'text/javascript');
-    }
-
-    if (
+      $responsable = response(view('metapi::jsonp', $response), 200)->header('Content-type', 'text/javascript');
+    } else if (
       strpos($this->request->header('accept'),'text/html') !== false && 
       config('app.debug') === true && $this->request->query('json') !== 'true')
     {
-      return response(view('metapi::json', ['json' => json_encode($response, JSON_PRETTY_PRINT)]), $code);
+      $responsable = response(view('metapi::json', ['json' => json_encode($response, JSON_PRETTY_PRINT)]), $code);
+    } else {
+      $responsable = response()->json($response, $code, [], JSON_PRETTY_PRINT);
     }
 
-    return response()->json($response, $code, [], JSON_PRETTY_PRINT);
+    if ($abort) {
+      return abort($responsable);
+    }
+
+    return $responsable;
 
   }
 
