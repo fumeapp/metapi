@@ -156,30 +156,31 @@ abstract class MetApiController extends BaseController
    * returns $this->errors w/ no view, transformer and an error code of 500
    */
 
-  protected function error($key='unknown') {
+  protected function error($key='unknown',$replace=[]) {
 
     if ($key !== 'unknown' || count($this->errors) < 1) {
-      $this->addError($key, __($key));
+      $this->addError($key, __($key,$replace));
     }
 
-    $this->render(['errors' => $this->errors], false, 500);
+    $this->render(['errors' => $this->errors], 500);
   }
 
   /**
    * render errors and abort
    */
   protected function abort() {
-    $this->render(['errors' => $this->errors], false, 500, true);
+    $this->render(['errors' => $this->errors], 500, true);
   }
 
   /**
    * Render success
-   * @param string
+   * @param String 
+   * @param Array
    * @return \Illuminate\Http\Response
    */
-  protected function success($message='Successful')
+  protected function success($message='Successful',$replace=[])
   {
-    return $this->render(['success' => true,'type' => 'success', 'message' => __($message)]);
+    return $this->render(['success' => true,'type' => 'success', 'message' => __($message,$replace)], 200, true);
   }
 
   /**
