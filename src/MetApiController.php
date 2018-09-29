@@ -162,7 +162,7 @@ abstract class MetApiController extends BaseController
       $this->addError($key, __($key,$replace));
     }
 
-    $this->render(['errors' => $this->errors], 500);
+    return $this->render(['errors' => $this->errors], 500);
   }
 
   /**
