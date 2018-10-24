@@ -35,12 +35,14 @@ abstract class MetApiController extends BaseController
     if ($default !== false) {
       $this->query['defaults'][$name] = $default;
     }
+    return $this;
   }
 
   protected function options($options) {
     foreach ($options as $key=>$value) {
       $this->option($key, $value);
     }
+    return $this;
   }
 
   protected function addMeta($name, $value) {
