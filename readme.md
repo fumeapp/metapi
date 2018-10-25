@@ -68,10 +68,14 @@ bob({
         {
 ```
 
+`GET /endpoint?approved=1` .. dev env, works with [ laravel-debugbar](https://github.com/barryvdh/laravel-debugbar)
+
+![Pretty](media/shot1.png)
+
 ## Features
 * Endpoint benchmarking
 * Laravel Validation wrapper that reflects requirements
-* Support for JSON, pretty printed JSON with syntax highlighting, and JSONP
+* Support for JSON, JSONP, and interactive syntax highlighted
 
 
 ## Installation
