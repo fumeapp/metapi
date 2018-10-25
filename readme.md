@@ -50,6 +50,24 @@ class OrgController extends Controller
         {
 ```
 
+`GET /endpoint?callback=bob`
+
+```js
+bob({
+    "benchmark": 0.011017084121704102,
+    "query": {
+        "defaults": [],
+        "options": {
+            "approved": "nullable|boolean",
+            "type": "nullable|in:this,that"
+        },
+        "params": [],
+        "combined": []
+    },
+    "data": [
+        {
+```
+
 ## Features
 * Endpoint benchmarking
 * Laravel Validation wrapper that reflects requirements
@@ -63,7 +81,7 @@ Install metapi with [composer](https://getcomposer.org/doc/00-intro.md):
 composer require acidjazz/metapi
 ```
 
-Make your Base `app/Http/Controllers/Controller.php` extend this library
+Make your `app/Http/Controllers/Controller.php` extend this library
 ```php
 class Controller extends \acidjazz\metapi\MetApiController
 {
