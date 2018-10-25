@@ -48,7 +48,6 @@ class OrgController extends Controller
     },
     "data": [
         {
-...
 ```
 
 ## Features
@@ -64,4 +63,8 @@ Install metapi with [composer](https://getcomposer.org/doc/00-intro.md):
 composer require acidjazz/metapi
 ```
 
-Make your Base HTTP Controller
+Make your Base `app/Http/Controllers/Controller.php` extend this library
+```php
+class Controller extends \acidjazz\metapi\MetApiController
+{
+```
