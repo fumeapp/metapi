@@ -122,17 +122,6 @@ abstract class MetApiController extends BaseController
     return $this->meta;
   }
 
-  protected function getParam($key) {
-    $this->verify();
-
-    if (!isset($this->query['params'][$key])) {
-      return false;
-    }
-
-    return $this->query['params'][$key];
-
-  }
-
   protected function addError($type,$message,$file=null,$line=null)
   {
     $error = [
@@ -198,7 +187,7 @@ abstract class MetApiController extends BaseController
       $code = 403;
     } else {
       $response = $this->getMeta();
-      $response['query'] = $this->verify();
+      $response['query'] = $this->query;
       $response['data'] = $data;
     }
 
