@@ -169,9 +169,14 @@ abstract class MetApiController extends BaseController
    * @param Array
    * @return \Illuminate\Http\Response
    */
-  protected function success($message='Successful',$replace=[])
+  protected function success($message='Successful',$replace=[],$data=[])
   {
-    return $this->render(['success' => true,'type' => 'success', 'message' => __($message,$replace)], 200, true);
+    return $this->render([
+      'success' => true,
+      'type' => 'success', 
+      'message' => __($message,$replace),
+      'data' => $data,
+    ], 200, true);
   }
 
   /**
