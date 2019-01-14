@@ -14,10 +14,8 @@ abstract class MetApiController extends BaseController
   protected $benchmark;
 
   protected $query = [
-    'defaults' => [],
     'options' => [],
     'params' => [],
-    'combined' => [],
   ];
 
   protected $errors = [];
@@ -32,9 +30,6 @@ abstract class MetApiController extends BaseController
 
   protected function option($name, $type, $default=false) {
     $this->query['options'][$name] = $type;
-    if ($default !== false) {
-      $this->query['defaults'][$name] = $default;
-    }
     return $this;
   }
 
@@ -105,12 +100,6 @@ abstract class MetApiController extends BaseController
       if (isset($this->query['options'][$key])) {
         $this->query['params'][$key] = $value;
       }
-    }
-
-    $this->query['combined'] = $this->query['defaults'];
-
-    foreach ($this->query['params'] as $key=>$value) {
-      $this->query['combined'][$key] = $value;
     }
 
     return $this->query;
