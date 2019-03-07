@@ -75,6 +75,8 @@ abstract class MetApiController extends BaseController
             'last_page' => $collection->lastPage(),
             'next_page_url' => $collection->nextPageUrl(),
             'prev_page_url' => $collection->previousPageUrl(),
+            'first_item' => $paginator->getCurrentPageFirstItem(),
+            'last_item' => $paginator->getCurrentPageLastItem(),
             'pages' => $pages,
         ]);
 
