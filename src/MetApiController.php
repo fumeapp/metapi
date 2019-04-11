@@ -50,9 +50,13 @@ abstract class MetApiController extends BaseController
         $this->meta[$name] = $value;
     }
 
-    protected function paginate($collection,$perpage=15) {
+    protected function paginate($collection,$perpage=15,$maxPages=7) {
 
-        $collection = $collection->paginate($perpage);
+        if (is_string($collection)) {
+            $collection = $collection::paginate($perpage);
+        } else {
+            $collection = $collection->paginate($perpage);
+        }
 
         $paginator = new Paginator(
             $collection->total(),
@@ -60,7 +64,7 @@ abstract class MetApiController extends BaseController
             $collection->currentPage()
         );
 
-        $paginator->setMaxPagesToShow(7);
+        $paginator->setMaxPagesToShow($maxPages);
 
         $pages = [];
 
