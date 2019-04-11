@@ -21,9 +21,10 @@ class OrgController extends Controller
     */
     public function index(Request $request)
     {
-        $this->option('approved', 'nullable|boolean');
-        $this->option('type', 'nullable|in:this,that');
-        $this->verify();
+        $this
+          ->option('approved', 'nullable|boolean');
+          ->option('type', 'nullable|in:this,that');
+          ->verify();
         ...
         $this->render($results);
 ```
@@ -68,7 +69,7 @@ bob({
         {
 ```
 
-`GET /endpoint?approved=1` .. dev env, works with [ laravel-debugbar](https://github.com/barryvdh/laravel-debugbar)
+`GET /endpoint?approved=1` .. dev environment, works with [ laravel-debugbar](https://github.com/barryvdh/laravel-debugbar)
 
 ![Pretty](media/shot1.png)
 
