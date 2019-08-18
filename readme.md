@@ -11,9 +11,16 @@
 
 <img src="https://github.com/acidjazz/metapi/blob/master/media/capture.jpg?raw=true"/>
 
-> dark theme using laravel-debugbar
+> dark theme with laravel-debugbar
 
-## Example Output
+
+## Features
+* Endpoint benchmarking
+* Laravel Validation wrapper that reflects requirements
+* Support for JSON and JSONP
+* Interactive tree browsing with search thanks to [jsoneditor](https://github.com/josdejong/jsoneditor)
+
+## Examples 
 
 ```php
 class OrgController extends Controller
@@ -72,12 +79,6 @@ bob({
     "data": [
         {
 ```
-
-## Features
-* Endpoint benchmarking
-* Laravel Validation wrapper that reflects requirements
-* Support for JSON, JSONP, and interactive syntax highlighted
-
 
 ## Installation
 
