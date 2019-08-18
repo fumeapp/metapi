@@ -205,7 +205,7 @@ abstract class MetApiController extends BaseController
             strpos($this->request->header('accept'),'text/html') !== false &&
             config('app.debug') === true && $this->request->query('json') !== 'true')
         {
-            $responsable = response(view('metapi::json', ['json' => json_encode($response, JSON_PRETTY_PRINT)]), $code);
+            $responsable = response(view('metapi::json', ['json' => json_encode($response, true)]), $code);
         } else {
             $responsable = response()->json($response, $code, [], JSON_PRETTY_PRINT);
         }
