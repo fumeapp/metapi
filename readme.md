@@ -75,10 +75,6 @@ bob({
         {
 ```
 
-`GET /endpoint?approved=1` .. dev environment, works with [ laravel-debugbar](https://github.com/barryvdh/laravel-debugbar)
-
-![Pretty](media/shot1.png)
-
 ## Features
 * Endpoint benchmarking
 * Laravel Validation wrapper that reflects requirements
