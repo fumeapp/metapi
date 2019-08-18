@@ -12,6 +12,7 @@
 ## Example output
 
 <img src="https://github.com/acidjazz/metapi/blob/master/media/capture.jpg?raw=true"/>
+> dark theme using laravel-debugbar
 
 ## Example Output
 
