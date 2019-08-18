@@ -9,8 +9,6 @@
 [![Latest Stable Version](https://poser.pugx.org/acidjazz/metapi/version.png)](https://packagist.org/packages/acidjazz/metapi)
 [![Total Downloads](https://poser.pugx.org/acidjazz/metapi/d/total.png)](https://packagist.org/packages/barryvdh/metapi)
 
-## Example output
-
 <img src="https://github.com/acidjazz/metapi/blob/master/media/capture.jpg?raw=true"/>
 
 > dark theme using laravel-debugbar
