@@ -11,7 +11,7 @@
 
 ## Example output
 
-<img src="https://github.com/acidjazz/metapi/raw/master/media/capture.png"/>
+<img src="https://github.com/acidjazz/metapi/blob/master/media/capture.jpg?raw=true"/>
 
 ## Example Output
 
