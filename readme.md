@@ -5,7 +5,6 @@
 
 > Own your endpoint
 
-[![Packagist License](https://poser.pugx.org/acidjazz/metapi/license.png)](https://choosealicense.com/licenses/mit/)
 [![Latest Stable Version](https://poser.pugx.org/acidjazz/metapi/version.png)](https://packagist.org/packages/acidjazz/metapi)
 [![Total Downloads](https://poser.pugx.org/acidjazz/metapi/d/total.png)](https://packagist.org/packages/acidjazz/metapi)
 
