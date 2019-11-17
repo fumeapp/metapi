@@ -7,7 +7,7 @@
 
 [![Packagist License](https://poser.pugx.org/acidjazz/metapi/license.png)](https://choosealicense.com/licenses/apache-2.0/)
 [![Latest Stable Version](https://poser.pugx.org/acidjazz/metapi/version.png)](https://packagist.org/packages/acidjazz/metapi)
-[![Total Downloads](https://poser.pugx.org/acidjazz/metapi/d/total.png)](https://packagist.org/packages/barryvdh/metapi)
+[![Total Downloads](https://poser.pugx.org/acidjazz/metapi/d/total.png)](https://packagist.org/packages/acidjazz/metapi)
 
 <img src="https://github.com/acidjazz/metapi/blob/master/media/capture.jpg?raw=true"/>
 
