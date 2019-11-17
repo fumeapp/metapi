@@ -2,12 +2,11 @@
   "name": "acidjazz/metapi",
   "type": "library",
   "description": "Laravel API helpers",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "keywords": [
     "Laravel", "API", "Pagination", "PHP"
   ],
-  "Homepage": "https://github.com/acidjazz/metapi",
-  "License": "APACHE",
+  "homepage": "https://github.com/acidjazz/metapi",
   "authors": [
     {
       "name": "Kevin Olson",
