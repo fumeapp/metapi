@@ -18,6 +18,7 @@ abstract class MetApiController extends BaseController
 
     protected $request;
     protected $benchmark;
+    protected $status;
 
     protected $query = [
         'options' => [],
@@ -28,6 +29,14 @@ abstract class MetApiController extends BaseController
 
     protected $meta = [];
     protected $compiled = false;
+
+    // Wether or not we want to return the paginate items or the entire structure
+    protected $paginateItems = false;
+
+    public function setPaginateItems($boolean)
+    {
+        $this->paginateItems = $boolean;
+    }
 
     public function __construct(Request $request) {
         $this->benchmark = microtime(true);
@@ -50,7 +59,7 @@ abstract class MetApiController extends BaseController
         $this->meta[$name] = $value;
     }
 
-    protected function paginate($collection,$perpage=15,$maxPages=7) {
+    protected function paginate($collection,$perpage=50,$maxPages=10) {
 
         if (is_string($collection)) {
             $collection = $collection::paginate($perpage);
@@ -77,14 +86,16 @@ abstract class MetApiController extends BaseController
             'per_page' => $collection->perPage(),
             'current_page' => $collection->currentPage(),
             'last_page' => $collection->lastPage(),
-            'next_page_url' => $collection->nextPageUrl(),
-            'prev_page_url' => $collection->previousPageUrl(),
             'first_item' => $paginator->getCurrentPageFirstItem(),
             'last_item' => $paginator->getCurrentPageLastItem(),
             'pages' => $pages,
         ]);
 
-        return $collection->items();
+        if ($this->paginateItems) {
+            return $collection->items();
+        }
+
+        return $collection;
 
     }
 
@@ -123,45 +134,45 @@ abstract class MetApiController extends BaseController
         return $this->meta;
     }
 
-    protected function addError($type,$message,$file=null,$line=null)
+    protected function addError($title, $detail, $status=400, $source=false )
     {
-        $error = [
-            'type' => $type,
-            'message' => $message,
-        ];
+        $error = [ 'status' => $status, 'title' => $title, ];
 
-        if ($file !== null) {
-            $error['file'] = $file;
+        if ($source) {
+            $error['source'] = $source;
         }
 
-        if ($line !== null) {
-            $error['line'] = $line;
-        }
+        $error['detail'] = $detail;
 
-        $this->errors[$type][] = $message;
+        $this->errors[] = $error;
 
         return $this;
     }
 
     /**
-     * render errors
-     * returns $this->errors w/ no view, transformer and an error code of 500
+     * Render errors
+     *
+     * @param string $key       - shortkey or title of error
+     * @param string|array $replace    - shortkey params
+     * @param integer $status   - HTTP status code to pass
+     * @param source array      - error source
+     * @return \Illuminate\Http\Response
      */
+    protected function error($key,$replace=null, $status=400, $source=false) {
 
-    protected function error($key='unknown',$replace=[]) {
-
-        if ($key !== 'unknown' || count($this->errors) < 1) {
-            $this->addError($key, __($key,$replace));
+        if (__($key, is_array($replace) ? $replace : []) !== $key) {
+            $this->addError($key, __($key, is_array($replace) ? $replace : []), $status, $source);
+        } else {
+            $this->addError($key, $replace, $status, $source);
         }
-
-        return $this->render(['errors' => $this->errors], 500);
+        return $this->render(['errors' => $this->errors], $status);
     }
 
     /**
      * render errors and abort
      */
     protected function abort() {
-        $this->render(['errors' => $this->errors], 500, true);
+        $this->render(['errors' => $this->errors], 400, true);
     }
 
     /**
@@ -188,11 +199,12 @@ abstract class MetApiController extends BaseController
      */
     protected function render($data=false,$code=200,$abort=false) {
 
-        if ($code === 403 || count($this->errors) > 0) {
-            $response = $data;
-            $code = 403;
+        if (in_array($code, [400, 403, 500]) || count($this->errors) > 0) {
+            $response['status'] = 'error';
+            $response = array_merge($response, $data);
         } else {
-            $response = $this->getMeta();
+            $response['status'] = 'success';
+            $response = array_merge($response, $this->getMeta());
             $response['query'] = $this->query;
             $response['data'] = $data;
         }
