@@ -31,7 +31,7 @@ abstract class MetApiController extends BaseController
     protected $compiled = false;
 
     // Wether or not we want to return the paginate items or the entire structure
-    protected $paginateItems = false;
+    protected $paginateItems = true;
 
     public function setPaginateItems($boolean)
     {
