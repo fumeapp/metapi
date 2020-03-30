@@ -1,14 +1,14 @@
 <?php
 
-namespace acidjazz\metapi;
+namespace kittyhawk\metapi;
 
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\{Routing\Controller as BaseController,
+    Foundation\Bus\DispatchesJobs,
+    Foundation\Validation\ValidatesRequests,
+    Foundation\Auth\Access\AuthorizesRequests,
+    Http\Request
+};
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-use Illuminate\Http\Request;
 use Validator;
 use JasonGrimes\Paginator;
 
@@ -30,37 +30,71 @@ abstract class MetApiController extends BaseController
     protected $meta = [];
     protected $compiled = false;
 
-    // Wether or not we want to return the paginate items or the entire structure
-    protected $paginateItems = true;
+    // Whether or not we want to return the paginate items or the entire structure
+    protected $paginateItems = false;
 
     public function setPaginateItems($boolean)
     {
         $this->paginateItems = $boolean;
     }
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         $this->benchmark = microtime(true);
         $this->request = $request;
     }
 
-    protected function option($name, $type, $default=false) {
+    /**
+     * push an option to our query stack
+     *
+     * @param string $name
+     * @param string $type
+     * @param boolean $default
+     * @return MetApiController
+     */
+    protected function option($name, $type, $default = false)
+    {
         $this->query['options'][$name] = $type;
         return $this;
     }
 
-    protected function options($options) {
-        foreach ($options as $key=>$value) {
+    /**
+     * push multiple options to our query stack
+     *
+     * @param array $options
+     * @return MetApiController
+     */
+    protected function options($options)
+    {
+        foreach ($options as $key => $value) {
             $this->option($key, $value);
         }
         return $this;
     }
 
-    protected function addMeta($name, $value) {
+    /**
+     * add metadata
+     *
+     * @param string $name
+     * @param string $value
+     *
+     * @return void
+     */
+    protected function addMeta($name, $value)
+    {
         $this->meta[$name] = $value;
     }
 
-    protected function paginate($collection,$perpage=50,$maxPages=10) {
-
+    /**
+     * add pagination metadata to the meta stack
+     *
+     * @param mixed $collection
+     * @param integer $perpage
+     * @param integer $maxPages
+     * @return mixed
+     */
+    protected function paginate($collection, $perpage = 50, $maxPages = 10)
+    {
         if (is_string($collection)) {
             $collection = $collection::paginate($perpage);
         } else {
@@ -96,17 +130,23 @@ abstract class MetApiController extends BaseController
         }
 
         return $collection;
-
     }
 
-    protected function verify($abort=true) {
+    /**
+     * verify through laravels Validator
+     *
+     * @param boolean $abort
+     * @return array|bool|void
+     */
+    protected function verify($abort = true)
+    {
 
         $validate = Validator::make($this->request->all(), $this->query['options']);
 
         if ($validate->fails()) {
 
-            foreach ($validate->errors()->toArray() as $key=>$value) {
-                foreach($value as $error) {
+            foreach ($validate->errors()->toArray() as $key => $value) {
+                foreach ($value as $error) {
                     $this->addError($key, $error);
                 }
             }
@@ -119,24 +159,66 @@ abstract class MetApiController extends BaseController
 
         }
 
-        foreach ($this->request->all() as $key=>$value) {
+        foreach ($this->request->all() as $key => $value) {
             if (isset($this->query['options'][$key])) {
+
+                if ($this->isFile($value)) {
+                    $value = (array)$value;
+                }
+
+                if (is_array($value)) {
+                    foreach ($value as $bkey => $bvalue) {
+                        if (is_resource($bvalue)) {
+                            unset($value[$bkey]);
+                        }
+                        if ($this->isFile($bvalue)) {
+                            $value[$bkey] = (array)$bvalue;
+                        }
+                    }
+                }
+
                 $this->query['params'][$key] = $value;
             }
         }
 
         return $this->query;
-
     }
 
-    protected function getMeta() {
-        $this->meta['benchmark'] = microtime(true)-$this->benchmark;
+    /**
+     * Detect if a value is an object and of type File
+     *
+     * @param mixed $value
+     * @return boolean
+     */
+    private function isFile($value)
+    {
+        return is_object($value) && in_array(get_class($value),
+                ['Illuminate\Http\UploadedFile', 'Illuminate\Http\Testing\File']);
+    }
+
+    /**
+     * return our metadata stack and benchmark the request
+     *
+     * @return array
+     */
+    protected function getMeta()
+    {
+        $this->meta['benchmark'] = microtime(true) - $this->benchmark;
         return $this->meta;
     }
 
-    protected function addError($title, $detail, $status=400, $source=false )
+    /**
+     * add an error to our error stack
+     *
+     * @param string $title
+     * @param string $detail
+     * @param integer $status
+     * @param boolean $source
+     * @return MetApiController
+     */
+    protected function addError($title, $detail, $status = 400, $source = false)
     {
-        $error = [ 'status' => $status, 'title' => $title, ];
+        $error = ['status' => $status, 'title' => $title,];
 
         if ($source) {
             $error['source'] = $source;
@@ -152,14 +234,14 @@ abstract class MetApiController extends BaseController
     /**
      * Render errors
      *
-     * @param string $key       - shortkey or title of error
-     * @param string|array $replace    - shortkey params
-     * @param integer $status   - HTTP status code to pass
-     * @param source array      - error source
+     * @param string $key - shortkey or title of error
+     * @param string|array $replace - shortkey params
+     * @param integer $status - HTTP status code to pass
+     * @param bool $source
      * @return \Illuminate\Http\Response
      */
-    protected function error($key,$replace=null, $status=400, $source=false) {
-
+    protected function error($key, $replace = null, $status = 400, $source = false)
+    {
         if (__($key, is_array($replace) ? $replace : []) !== $key) {
             $this->addError($key, __($key, is_array($replace) ? $replace : []), $status, $source);
         } else {
@@ -171,22 +253,23 @@ abstract class MetApiController extends BaseController
     /**
      * render errors and abort
      */
-    protected function abort() {
+    protected function abort()
+    {
         $this->render(['errors' => $this->errors], 400, true);
     }
 
     /**
      * Render success
-     * @param String
-     * @param Array
+     * @param string
+     * @param array
      * @return \Illuminate\Http\Response
      */
-    protected function success($message='Successful',$replace=[],$data=[])
+    protected function success($message = 'Successful', $replace = [], $data = [])
     {
         return $this->render([
             'success' => true,
             'type' => 'success',
-            'message' => __($message,$replace),
+            'message' => __($message, $replace),
             'data' => $data,
         ], 200, true);
     }
@@ -195,9 +278,11 @@ abstract class MetApiController extends BaseController
      * Final output
      * @param mixed $data data to be sent
      * @param integer $code response code, defaulting to 200
-     * @return \Illuminate\Http\Response
+     * @param bool $abort
+     * @return mixed
      */
-    protected function render($data=false,$code=200,$abort=false) {
+    protected function render($data = false, $code = 200, $abort = false)
+    {
 
         if (in_array($code, [400, 403, 500]) || count($this->errors) > 0) {
             $response['status'] = 'error';
@@ -211,15 +296,16 @@ abstract class MetApiController extends BaseController
 
         if ($this->request->query('callback') !== null) {
             $json = json_encode($response, JSON_PRETTY_PRINT);
-            $response = ['callback' => $this->request->query('callback'),'json' => $json];
+            $response = ['callback' => $this->request->query('callback'), 'json' => $json];
             $responsable = response(view('metapi::jsonp', $response), 200)->header('Content-type', 'text/javascript');
-        } else if (
-            strpos($this->request->header('accept'),'text/html') !== false &&
-            config('app.debug') === true && $this->request->query('json') !== 'true')
-        {
-            $responsable = response(view('metapi::json', ['json' => json_encode($response, true)]), $code);
         } else {
-            $responsable = response()->json($response, $code, [], JSON_PRETTY_PRINT);
+            if (
+                strpos($this->request->header('accept'), 'text/html') !== false &&
+                config('app.debug') === true && $this->request->query('json') !== 'true') {
+                $responsable = response(view('metapi::json', ['json' => json_encode($response, true)]), $code);
+            } else {
+                $responsable = response()->json($response, $code, [], JSON_PRETTY_PRINT);
+            }
         }
 
         if ($abort) {
@@ -227,7 +313,5 @@ abstract class MetApiController extends BaseController
         }
 
         return $responsable;
-
     }
-
 }
