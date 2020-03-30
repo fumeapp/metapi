@@ -1,6 +1,6 @@
 <?php
 
-namespace kittyhawk\metapi;
+namespace acidjazz\metapi;
 
 use Illuminate\{Routing\Controller as BaseController,
     Foundation\Bus\DispatchesJobs,
