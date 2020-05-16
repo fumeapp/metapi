@@ -1,0 +1,23 @@
+name: Test
+on:
+  push:
+    branches-ignore: [ staging ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo \"::set-output name=dir::$(composer config cache-files-dir)\"\n
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles(''**/composer.lock'') }}
+          restore-keys: ${{ runner.os }}-composer-\n
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --color=always --testdox
+
+
