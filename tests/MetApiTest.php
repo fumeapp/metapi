@@ -58,4 +58,35 @@ class MetApiTest extends BaseTest
         $this->assertEquals([], $this->ma->errors);
     }
 
+    public function testAddError()
+    {
+        $this->ma->error('title', 'detail', 420, true);
+        $this->assertEquals(
+            [[
+            "status" => 420,
+            "title" => "title",
+            "source" => true,
+            "detail" => "detail",
+            ]],
+            $this->ma->errors
+        );
+    }
+
+    public function testAbort()
+    {
+        try {
+            $this->ma->abort();
+        } catch (\Illuminate\Http\Exceptions\HttpResponseException $e) {
+            $this->assertInstanceOf(\Illuminate\Http\Exceptions\HttpResponseException::class, $e);
+        }
+    }
+
+    public function testSuccess()
+    {
+        try {
+            $this->ma->success();
+        } catch (\Illuminate\Http\Exceptions\HttpResponseException $e) {
+            $this->assertInstanceOf(\Illuminate\Http\Exceptions\HttpResponseException::class, $e);
+        }
+    }
 }
