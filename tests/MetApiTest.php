@@ -38,4 +38,24 @@ class MetApiTest extends BaseTest
         $this->assertEquals(['this' => 'that'], $this->ma->meta);
     }
 
+    public function testVerifyError()
+    {
+        $this->ma->option('name', 'required|string');
+        $this->ma->verify(false);
+        $this->assertEquals(
+            [[
+            'status' => 400,
+            'title' => 'name',
+            'detail' => 'The name field is required.',
+            ]],
+            $this->ma->errors
+        );
+    }
+    public function testVerifySuccess()
+    {
+        $this->request->request->add(['name' => 'bob']);
+        $this->ma->verify(false);
+        $this->assertEquals([], $this->ma->errors);
+    }
+
 }
