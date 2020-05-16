@@ -12,3 +12,13 @@ vendor
 ## Build
 build/
 
+
+vendor/
+composer.lock
+composer.phar
+.DS_Store
+*.swp
+.idea
+bootstrap/cache/*
+storage/logs/*
+.phpunit.result.cache

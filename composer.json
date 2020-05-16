@@ -24,14 +24,21 @@
       "acidjazz\\metapi\\": "src"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "acidjazz\\metapi\\Tests\\": "tests"
+    }
+  },
   "extra": {
     "laravel": {
       "providers": [
         "acidjazz\\metapi\\ServiceProvider"
-      ],
-      "aliases": {
-        "MetaApiController": "acidjazz\\metapi\\Facade"
-      }
+      ]
     }
+  },
+  "require-dev": {
+    "orchestra/testbench": "^5.2",
+    "phpunit/phpunit": "^9.1",
+    "mockery/mockery": "^1.3"
   }
 }

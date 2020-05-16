@@ -2,44 +2,32 @@
 
 namespace acidjazz\metapi;
 
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use Illuminate\{Routing\Controller as BaseController,
-    Foundation\Bus\DispatchesJobs,
-    Foundation\Auth\Access\AuthorizesRequests,
-};
-
 use Validator;
 use JasonGrimes\Paginator;
 
-abstract class MetApiController extends BaseController
+trait MetApi
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public Request $request;
+    public float $benchmark;
+    public string $status;
 
-    protected $request;
-    protected $benchmark;
-    protected $status;
-
-    protected $query = [
+    /** @var array|array[] $query */
+    public array $query = [
         'options' => [],
         'params' => [],
     ];
 
-    protected $errors = [];
+    /** @var array $errors */
+    public array $errors = [];
 
-    protected $meta = [];
-
-    // Whether or not we want to return the paginate items or the entire structure
-    protected $paginateItems = true;
+    /** @var array $meta */
+    public array $meta = [];
 
     /**
-     * @param $boolean
+     * MetApi constructor.
+     * @param Request $request
      */
-    public function setPaginateItems($boolean): void
-    {
-        $this->paginateItems = $boolean;
-    }
-
     public function __construct(Request $request)
     {
         $this->benchmark = microtime(true);
@@ -51,9 +39,9 @@ abstract class MetApiController extends BaseController
      *
      * @param string $name
      * @param string $type
-     * @return MetApiController
+     * @return MetApi
      */
-    protected function option($name, $type)
+    public function option($name, $type)
     {
         $this->query['options'][$name] = $type;
         return $this;
@@ -63,9 +51,9 @@ abstract class MetApiController extends BaseController
      * push multiple options to our query stack
      *
      * @param array $options
-     * @return MetApiController
+     * @return MetApi
      */
-    protected function options($options)
+    public function options($options)
     {
         foreach ($options as $key => $value) {
             $this->option($key, $value);
@@ -81,7 +69,7 @@ abstract class MetApiController extends BaseController
      *
      * @return void
      */
-    protected function addMeta($name, $value)
+    public function addMeta($name, $value)
     {
         $this->meta[$name] = $value;
     }
@@ -94,7 +82,7 @@ abstract class MetApiController extends BaseController
      * @param integer $maxPages
      * @return mixed
      */
-    protected function paginate($collection, $perpage = 50, $maxPages = 10)
+    public function paginate($collection, $perpage = 50, $maxPages = 10)
     {
         if (is_string($collection)) {
             $collection = $collection::paginate($perpage);
@@ -126,11 +114,7 @@ abstract class MetApiController extends BaseController
             'pages' => $pages,
         ]);
 
-        if ($this->paginateItems) {
-            return $collection->items();
-        }
-
-        return $collection;
+        return $collection->items();
     }
 
     /**
@@ -139,7 +123,7 @@ abstract class MetApiController extends BaseController
      * @param boolean $abort
      * @return array|bool|void
      */
-    protected function verify($abort = true)
+    public function verify($abort = true)
     {
 
         $validate = Validator::make($this->request->all(), $this->query['options']);
@@ -202,7 +186,7 @@ abstract class MetApiController extends BaseController
      *
      * @return array
      */
-    protected function getMeta()
+    public function getMeta()
     {
         $this->meta['benchmark'] = microtime(true) - $this->benchmark;
         return $this->meta;
@@ -215,9 +199,9 @@ abstract class MetApiController extends BaseController
      * @param string $detail
      * @param integer $status
      * @param boolean $source
-     * @return MetApiController
+     * @return MetApi
      */
-    protected function addError($title, $detail, $status = 400, $source = false)
+    public function addError($title, $detail, $status = 400, $source = false)
     {
         $error = ['status' => $status, 'title' => $title,];
 
@@ -241,7 +225,7 @@ abstract class MetApiController extends BaseController
      * @param bool $source
      * @return mixed
      */
-    protected function error($key, $replace = null, $status = 400, $source = false)
+    public function error($key, $replace = null, $status = 400, $source = false)
     {
         if (__($key, is_array($replace) ? $replace : []) !== $key) {
             $this->addError($key, __($key, is_array($replace) ? $replace : []), $status, $source);
@@ -254,7 +238,7 @@ abstract class MetApiController extends BaseController
     /**
      * render errors and abort
      */
-    protected function abort()
+    public function abort()
     {
         $this->render(['errors' => $this->errors], 400, true);
     }
@@ -265,7 +249,7 @@ abstract class MetApiController extends BaseController
      * @param array
      * @return mixed
      */
-    protected function success($message = 'Successful', $replace = [], $data = [])
+    public function success($message = 'Successful', $replace = [], $data = [])
     {
         return $this->render([
             'success' => true,
@@ -282,7 +266,7 @@ abstract class MetApiController extends BaseController
      * @param bool $abort
      * @return mixed
      */
-    protected function render($data = false, $code = 200, $abort = false)
+    public function render($data = false, $code = 200, $abort = false)
     {
 
         if (in_array($code, [400, 403, 500]) || count($this->errors) > 0) {
@@ -299,13 +283,11 @@ abstract class MetApiController extends BaseController
             $json = json_encode($response, JSON_PRETTY_PRINT);
             $response = ['callback' => $this->request->query('callback'), 'json' => $json];
             $responsable = response(view('metapi::jsonp', $response), 200)->header('Content-type', 'text/javascript');
+        } elseif (strpos($this->request->header('accept'), 'text/html') !== false &&
+            config('app.debug') === true && $this->request->query('json') !== 'true') {
+            $responsable = response(view('metapi::json', ['json' => json_encode($response, true)]), $code);
         } else {
-            if (strpos($this->request->header('accept'), 'text/html') !== false &&
-                config('app.debug') === true && $this->request->query('json') !== 'true') {
-                $responsable = response(view('metapi::json', ['json' => json_encode($response, true)]), $code);
-            } else {
-                $responsable = response()->json($response, $code, [], JSON_PRETTY_PRINT);
-            }
+            $responsable = response()->json($response, $code, [], JSON_PRETTY_PRINT);
         }
 
         if ($abort) {
