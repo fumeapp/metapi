@@ -18,6 +18,7 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --color=always --testdox
-
+        run: vendor/bin/phpunit --color=always --testdox --coverage-clover clover.xml
+      - name: Upload to CodeCov
+        run: bash <(curl -s https://codecov.io/bash)
 
