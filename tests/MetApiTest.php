@@ -3,8 +3,6 @@
 namespace acidjazz\metapi\Tests;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 
 class MetApiTest extends BaseTest
 {
