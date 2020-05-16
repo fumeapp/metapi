@@ -2,6 +2,7 @@
 
 namespace acidjazz\metapi\Tests;
 
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 class MetApiTest extends BaseTest
@@ -74,8 +75,8 @@ class MetApiTest extends BaseTest
     {
         try {
             $this->ma->abort();
-        } catch (\Illuminate\Http\Exceptions\HttpResponseException $e) {
-            $this->assertInstanceOf(\Illuminate\Http\Exceptions\HttpResponseException::class, $e);
+        } catch (HttpResponseException $e) {
+            $this->assertInstanceOf(HttpResponseException::class, $e);
         }
     }
 
@@ -83,8 +84,8 @@ class MetApiTest extends BaseTest
     {
         try {
             $this->ma->success();
-        } catch (\Illuminate\Http\Exceptions\HttpResponseException $e) {
-            $this->assertInstanceOf(\Illuminate\Http\Exceptions\HttpResponseException::class, $e);
+        } catch (HttpResponseException $e) {
+            $this->assertInstanceOf(HttpResponseException::class, $e);
         }
     }
 }
