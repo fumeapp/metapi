@@ -3,9 +3,9 @@
   <head>
     <title>{{ config('app.name') }}</title>
     <link rel="icon" type="image/x-icon" href="https://png.pngtree.com/svg/20170401/b49f30849c.png" />
-    <link rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/6.3.0/jsoneditor.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsoneditor@8.6.4/dist/jsoneditor.css"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/6.3.0/jsoneditor.min.js" integrity="sha256-o2/L37SBn4ufKxtZAItcvBdidVsP170IKNcqfVd3ZF4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@8.6.4/dist/jsoneditor.js"></script>
     <style lang="text/css">
         body, html {
           margin: 0;

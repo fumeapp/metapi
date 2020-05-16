@@ -2,11 +2,11 @@
 
 namespace acidjazz\metapi;
 
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\{Routing\Controller as BaseController,
     Foundation\Bus\DispatchesJobs,
-    Foundation\Validation\ValidatesRequests,
     Foundation\Auth\Access\AuthorizesRequests,
-    Http\Request
 };
 
 use Validator;
@@ -28,12 +28,14 @@ abstract class MetApiController extends BaseController
     protected $errors = [];
 
     protected $meta = [];
-    protected $compiled = false;
 
     // Whether or not we want to return the paginate items or the entire structure
     protected $paginateItems = true;
 
-    public function setPaginateItems($boolean)
+    /**
+     * @param $boolean
+     */
+    public function setPaginateItems($boolean): void
     {
         $this->paginateItems = $boolean;
     }
@@ -49,10 +51,9 @@ abstract class MetApiController extends BaseController
      *
      * @param string $name
      * @param string $type
-     * @param boolean $default
      * @return MetApiController
      */
-    protected function option($name, $type, $default = false)
+    protected function option($name, $type)
     {
         $this->query['options'][$name] = $type;
         return $this;
@@ -76,7 +77,7 @@ abstract class MetApiController extends BaseController
      * add metadata
      *
      * @param string $name
-     * @param string $value
+     * @param mixed $value
      *
      * @return void
      */
@@ -133,7 +134,7 @@ abstract class MetApiController extends BaseController
     }
 
     /**
-     * verify through laravels Validator
+     * Verify through the Validator
      *
      * @param boolean $abort
      * @return array|bool|void
@@ -144,7 +145,6 @@ abstract class MetApiController extends BaseController
         $validate = Validator::make($this->request->all(), $this->query['options']);
 
         if ($validate->fails()) {
-
             foreach ($validate->errors()->toArray() as $key => $value) {
                 foreach ($value as $error) {
                     $this->addError($key, $error);
@@ -161,7 +161,6 @@ abstract class MetApiController extends BaseController
 
         foreach ($this->request->all() as $key => $value) {
             if (isset($this->query['options'][$key])) {
-
                 if ($this->isFile($value)) {
                     $value = (array)$value;
                 }
@@ -192,8 +191,10 @@ abstract class MetApiController extends BaseController
      */
     private function isFile($value)
     {
-        return is_object($value) && in_array(get_class($value),
-                ['Illuminate\Http\UploadedFile', 'Illuminate\Http\Testing\File']);
+        return is_object($value) && in_array(
+            get_class($value),
+            ['Illuminate\Http\UploadedFile', 'Illuminate\Http\Testing\File']
+        );
     }
 
     /**
@@ -238,7 +239,7 @@ abstract class MetApiController extends BaseController
      * @param string|array $replace - shortkey params
      * @param integer $status - HTTP status code to pass
      * @param bool $source
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     protected function error($key, $replace = null, $status = 400, $source = false)
     {
@@ -262,7 +263,7 @@ abstract class MetApiController extends BaseController
      * Render success
      * @param string
      * @param array
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     protected function success($message = 'Successful', $replace = [], $data = [])
     {
@@ -277,7 +278,7 @@ abstract class MetApiController extends BaseController
     /**
      * Final output
      * @param mixed $data data to be sent
-     * @param integer $code response code, defaulting to 200
+     * @param int $code response code, defaulting to 200
      * @param bool $abort
      * @return mixed
      */
@@ -299,8 +300,7 @@ abstract class MetApiController extends BaseController
             $response = ['callback' => $this->request->query('callback'), 'json' => $json];
             $responsable = response(view('metapi::jsonp', $response), 200)->header('Content-type', 'text/javascript');
         } else {
-            if (
-                strpos($this->request->header('accept'), 'text/html') !== false &&
+            if (strpos($this->request->header('accept'), 'text/html') !== false &&
                 config('app.debug') === true && $this->request->query('json') !== 'true') {
                 $responsable = response(view('metapi::json', ['json' => json_encode($response, true)]), $code);
             } else {
