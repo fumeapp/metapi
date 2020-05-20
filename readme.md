@@ -29,7 +29,6 @@ namespace App\Http\Controllers;
 
 use acidjazz\metapi\MetApi;
 
-
 class OrgController extends Controller
 {
 
