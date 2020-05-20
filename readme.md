@@ -23,8 +23,18 @@
 ## Examples 
 
 ```php
+<?php
+
+namespace App\Http\Controllers;
+
+use acidjazz\metapi\MetApi;
+
+
 class OrgController extends Controller
 {
+
+  use MetApi;
+
     /**
     * Display a listing of the resource.
     *
