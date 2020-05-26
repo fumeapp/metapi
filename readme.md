@@ -20,6 +20,23 @@
 * Support for JSON and JSONP
 * Interactive tree browsing with search thanks to [jsoneditor](https://github.com/josdejong/jsoneditor)
 
+
+## Installation
+
+Install metapi with [composer](https://getcomposer.org/doc/00-intro.md):
+```bash
+composer require acidjazz/metapi
+```
+
+Extend this library
+> (`app/Http/Controllers/Controller.php` is recommended)
+```php
+use acidjazz\metapi\MetApi;
+class Controller
+{
+    use Metapi;  
+```
+
 ## Examples 
 
 ```php
@@ -89,15 +106,3 @@ bob({
         {
 ```
 
-## Installation
-
-Install metapi with [composer](https://getcomposer.org/doc/00-intro.md):
-```bash
-composer require acidjazz/metapi
-```
-
-Make your `app/Http/Controllers/Controller.php` extend this library
-```php
-class Controller extends \acidjazz\metapi\MetApiController
-{
-```
