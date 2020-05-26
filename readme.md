@@ -11,7 +11,7 @@
 
 <img src="https://github.com/acidjazz/metapi/blob/master/media/capture.jpg?raw=true"/>
 
-> dark theme with laravel-debugbar
+> solarized dark theme with laravel-debugbar
 
 
 ## Features
