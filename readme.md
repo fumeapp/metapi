@@ -28,7 +28,7 @@ Install metapi with [composer](https://getcomposer.org/doc/00-intro.md):
 composer require acidjazz/metapi
 ```
 
-Extend this library
+Add the trait
 > (`app/Http/Controllers/Controller.php` is recommended)
 ```php
 <?php
