@@ -31,6 +31,8 @@ composer require acidjazz/metapi
 Extend this library
 > (`app/Http/Controllers/Controller.php` is recommended)
 ```php
+<?php
+
 use acidjazz\metapi\MetApi;
 class Controller
 {
