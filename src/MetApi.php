@@ -38,7 +38,7 @@ trait MetApi
      * push an option to our query stack
      *
      * @param string $name
-     * @param string $type
+     * @param string|array $type
      * @return MetApi
      */
     public function option($name, $type)
