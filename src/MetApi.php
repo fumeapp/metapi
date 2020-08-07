@@ -35,15 +35,15 @@ trait MetApi
     }
 
     /**
-     * push an option to our query stack
+     * Push an option to our query stack
      *
-     * @param string $name
-     * @param string|array $type
+     * @param string $name Name of the option
+     * @param string|array $rules String or array of Validation Rules, see https://laravel.com/docs/7.x/validation#available-validation-rules
      * @return MetApi
      */
-    public function option($name, $type)
+    public function option($name, $rules)
     {
-        $this->query['options'][$name] = $type;
+        $this->query['options'][$name] = $rules;
         return $this;
     }
 
