@@ -11,7 +11,7 @@
 
 <img src="https://github.com/acidjazz/metapi/blob/master/media/capture.png?raw=true"/>
 
-> solarized dark theme with laravel-debugbar
+> Dracula dark theme with laravel-debugbar
 
 
 ## Features
@@ -19,6 +19,7 @@
 * Laravel Validation wrapper that reflects requirements
 * Support for JSON and JSONP
 * Interactive tree browsing with search thanks to [jsoneditor](https://github.com/josdejong/jsoneditor)
+* Dracula Dark theme support to pair with [laravel-debugbar](https://github.com/barryvdh/laravel-debugbar)
 
 
 ## Installation

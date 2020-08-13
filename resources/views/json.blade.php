@@ -122,28 +122,6 @@
             color: #50fa7b;
         }
 
-        /*
-
-        div.jsoneditor-value.jsoneditor-null {
-          color: #8cbd7e;
-        }
-
-
-        div.jsoneditor-tree button.jsoneditor-button:focus {
-          background-color: #a79985;
-          outline: 1px solid #888;
-        }
-
-        div.jsoneditor-field.jsoneditor-highlight-active,
-        div.jsoneditor-field.jsoneditor-highlight-active:focus,
-        div.jsoneditor-field.jsoneditor-highlight-active:hover,
-        div.jsoneditor-value.jsoneditor-highlight-active,
-        div.jsoneditor-value.jsoneditor-highlight-active:focus,
-        div.jsoneditor-value.jsoneditor-highlight-active:hover {
-          color: #272727;
-        }
-
-
         @keyframes slide-in-right {
           from {
             opacity: 0;
@@ -153,90 +131,6 @@
             transform: translate(0, 0);
           }
         }
-         */
-
-        /* Dracula Theme v1.2.5
- *
- * https://github.com/dracula/highlightjs
- *
- * Copyright 2016-present, All rights reserved
- *
- * Code licensed under the MIT license
- *
- * @author Denis Ciccale <dciccale@gmail.com>
- * @author Zeno Rocha <hi@zenorocha.com>
- */
-
-        .hljs {
-            display: block;
-            overflow-x: auto;
-            padding: 0.5em;
-            background: #282a36;
-        }
-
-        .hljs-built_in,
-        .hljs-selector-tag,
-        .hljs-section,
-        .hljs-link {
-            color: #8be9fd;
-        }
-
-        .hljs-keyword {
-            color: #ff79c6;
-        }
-
-        .hljs,
-        .hljs-subst {
-            color: #f8f8f2;
-        }
-
-        .hljs-title {
-            color: #50fa7b;
-        }
-
-        .hljs-string,
-        .hljs-meta,
-        .hljs-name,
-        .hljs-type,
-        .hljs-attr,
-        .hljs-symbol,
-        .hljs-bullet,
-        .hljs-addition,
-        .hljs-variable,
-        .hljs-template-tag,
-        .hljs-template-variable {
-            color: #f1fa8c;
-        }
-
-        .hljs-comment,
-        .hljs-quote,
-        .hljs-deletion {
-            color: #6272a4;
-        }
-
-        .hljs-keyword,
-        .hljs-selector-tag,
-        .hljs-literal,
-        .hljs-title,
-        .hljs-section,
-        .hljs-doctag,
-        .hljs-type,
-        .hljs-name,
-        .hljs-strong {
-            font-weight: bold;
-        }
-
-        .hljs-literal,
-        .hljs-number {
-            color: #bd93f9;
-        }
-
-        .hljs-emphasis {
-            font-style: italic;
-        }
-
-
-
     </style>
   </head>
   <body>
