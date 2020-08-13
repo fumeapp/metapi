@@ -9,7 +9,7 @@
 [![Total Downloads](https://poser.pugx.org/acidjazz/metapi/d/total.png)](https://packagist.org/packages/acidjazz/metapi)
 [![codecov](https://codecov.io/gh/acidjazz/metapi/branch/master/graph/badge.svg)](https://codecov.io/gh/acidjazz/metapi)
 
-<img src="https://github.com/acidjazz/metapi/blob/master/media/capture.jpg?raw=true"/>
+<img src="https://github.com/acidjazz/metapi/blob/master/media/capture.png?raw=true"/>
 
 > solarized dark theme with laravel-debugbar
 

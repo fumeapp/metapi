@@ -3,147 +3,32 @@
   <head>
     <title>{{ config('app.name') }}</title>
     <link rel="icon" type="image/x-icon" href="https://png.pngtree.com/svg/20170401/b49f30849c.png" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsoneditor@8.6.4/dist/jsoneditor.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsoneditor@9.0.3/dist/jsoneditor.css"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@8.6.4/dist/jsoneditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.0.3/dist/jsoneditor.js"></script>
     <style lang="text/css">
         body, html {
           margin: 0;
           padding: 0;
           font-family: 'Roboto Mono', monospace !important;
           font-size: 16px !important;
-          background-color: #272727;
-          color: #ebdab4;
+          background: #282a36;
         }
 
-
-        div.phpdebugbar {
-          font-family: 'Roboto Mono', monospace !important;
-          font-size: 13px !important;
-          background: #272727 !important;
-          color: #ebdab4 !important;
+        #editor {
+            height: 100vh;
         }
 
-        div.phpdebugbar-header,
-        a.phpdebugbar-restore-btn,
-        div.phpdebugbar-openhandler .phpdebugbar-openhandler-header {
-          background-color: #3c3836 !important;
+        #json, .jsoneditor-expand-all, .jsoneditor-collapse-all {
+            display: none;
         }
 
-        div.phpdebugbar-header > div > * {
-          color: #ebdab4 !important;
+        table.jsoneditor-tree > tbody > tr.jsoneditor-expandable:first-child {
+            display: none;
         }
 
-        div.phpdebugbar-mini-design a.phpdebugbar-tab {
-          border-right: 1px solid #888 !important;
-        }
-
-
-        div.phpdebugbar .hljs-comment,
-        div.phpdebugbar .hljs-template_comment,
-        div.phpdebugbar .diff .hljs-header,
-        div.phpdebugbar .hljs-javadoc {
-          color: #998;
-          font-style: italic
-        }
-
-        div.phpdebugbar .hljs-keyword,
-        div.phpdebugbar .css .rule .hljs-keyword,
-        div.phpdebugbar .hljs-winutils,
-        div.phpdebugbar .javascript .hljs-title,
-        div.phpdebugbar .nginx .hljs-title,
-        div.phpdebugbar .hljs-subst,
-        div.phpdebugbar .hljs-request,
-        div.phpdebugbar .hljs-status {
-          color: #ebdab4 !important;
-        }
-
-        div.phpdebugbar .hljs-number,
-        div.phpdebugbar .hljs-hexcolor,
-        div.phpdebugbar .ruby .hljs-constant {
-          color: #f54a3a !important;
-        }
-
-        div.phpdebugbar .hljs-string,
-        div.phpdebugbar .hljs-tag .hljs-value,
-        div.phpdebugbar .hljs-phpdoc,
-        div.phpdebugbar .tex .hljs-formula {
-          color: #b2b535 !important;
-        }
-
-        div.phpdebugbar .hljs-title,
-        div.phpdebugbar .hljs-id,
-        div.phpdebugbar .coffeescript .hljs-params,
-        div.phpdebugbar .scss .hljs-preprocessor {
-          color: #900;
-          font-weight: bold
-        }
-
-        a.phpdebugbar-tab span.phpdebugbar-badge {
-          background: #f54a3a !important;
-          color: #ebdab4 !important;
-        }
-
-        a.phpdebugbar-tab.phpdebugbar-active {
-          background: #f54a3a !important;
-          color: #ebdab4 !important;
-        }
-
-        a.phpdebugbar-tab.phpdebugbar-active span.phpdebugbar-badge {
-          background-color: #ebdab4 !important;
-          color: #f54a3a !important;
-        }
-
-        ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item:nth-child(even) {
-          background-color: #3c3836 !important;
-        }
-
-        div.phpdebugbar code, div.phpdebugbar pre {
-          color: #f6bc41 !important;
-        }
-
-        ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item .phpdebugbar-widgets-params {
-          background-color: #3c3836 !important;
-        }
-
-        .phpdebugbar-text-muted {
-          color: #8cbd7e !important;
-        }
-
-        div.phpdebugbar-widgets-templates div.phpdebugbar-widgets-status {
-          background-color: #a79985 !important;
-          color: #ebdab4;
-        }
-
-        ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item:hover {
-          background: #504945 !important;
-        }
-
-        a.phpdebugbar-tab:hover,
-        span.phpdebugbar-indicator:hover,
-        a.phpdebugbar-indicator:hover,
-        a.phpdebugbar-close-btn:hover,
-        a.phpdebugbar-open-btn:hover {
-            background-color: #ebdab4 !important;
-            color: #262626 !important;
-            transition: background-color .25s linear 0s, color .25s linear 0s;
-        }
-
-        ul.phpdebugbar-widgets-timeline li:nth-child(even) {
-          background-color: #504945 !important;
-          color: #ebdab4 !important;
-        }
-
-        .phpdebugbar-indicator span.phpdebugbar-tooltip {
-          background-color: #ebdab4 !important;
-          color: #272727 !important;
-        }
-
-
-
-        ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-label,
-        ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector {
-          color: #ebdab4 !important;
+        table.jsoneditor-tree {
+            margin-left: -27px;
         }
 
         div.jsoneditor-field,
@@ -153,81 +38,96 @@
         div.jsoneditor textarea,
         div.jsoneditor pre.jsoneditor-preview,
         div.jsoneditor .jsoneditor-schema-error {
-          font-family: 'Roboto Mono', monospace !important;
-          font-size: 16px !important;
-        }
-
-        #json {
-          display: none;
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 16px !important;
         }
 
         .title {
-          display: block;
-          font-weight: bold;
-          padding: 5px;
-          padding-left: 70px;
-          animation: slide-in-right 0.2s ease 0s;
-          color: #83a191;
+            display: block;
+            font-weight: bold;
+            padding: 5px;
+            padding-left: 10px;
+            animation: slide-in-right 0.2s ease 0s;
+            color: white;
+            margin-top: 7px;
+        }
+        .version {
+            font-weight: normal;
+            font-size: 12px;
+            margin-left: 10px;
+            background-color: #fb5661;
+            padding: 2px 8px 3px 8px;
+            border-radius: 10px;
         }
 
         div.jsoneditor {
-          border: 0px solid #888;
+            border: 0 solid #888;
         }
 
         div.jsoneditor-menu {
-          background-color: #3c3836;
-          border-bottom: 0px solid #888;
+            border-bottom: 0 solid #888;
+            background-color: #2d3748;
+            color: #718096;
+            height: 46px;
         }
 
-        div.jsoneditor-navigation-bar {
-          border-bottom: 0px solid #888;
+        div.jsoneditor-search  {
+            margin: 6px;
         }
-
-        table.jsoneditor-search div.jsoneditor-frame {
-          background-color: #a79985;
-          color: #2b2728;
+        div.jsoneditor-search div.jsoneditor-frame {
+            border-radius: 10px;
+            background-color: #282a36;
+            color: #2b2728;
         }
-
         div.jsoneditor .jsoneditor-search input {
-          color: white;
-        }
-
-
-        table.jsoneditor-search button.jsoneditor-refresh {
-          background-position: -99px -48px;
-        }
-
-        table.jsoneditor-search button.jsoneditor-next {
-          background-position: -124px -48px;
-        }
-        table.jsoneditor-search button.jsoneditor-previous {
-          background-position: -148px -48px;
-        }
-
-
-        div.jsoneditor-treepath {
-          background-color: #a79985;
-          color: #272727;
+            background-color: #282a36;
+            color: white;
         }
 
         div.jsoneditor-field {
-          color: #ebdab4;
+            color: white;
         }
+
         div.jsoneditor-value {
-          color: #f9bc40;
+            color: #718096;
+        }
+
+        div.jsoneditor-readonly {
+            color: #6272a4;
         }
 
         div.jsoneditor-value.jsoneditor-string {
-          color: #b2b535;
+            color: #f1fa8c;
         }
+        a.jsoneditor-value.jsoneditor-url {
+            color: #8be9fd;
+        }
+
+        div.jsoneditor-value.jsoneditor-number {
+            color: #bd93f9;
+        }
+
+        div.jsoneditor-field.jsoneditor-highlight,
+        div.jsoneditor-field.jsoneditor-highlight-active,
+        div.jsoneditor-field.jsoneditor-highlight-active:focus,
+        div.jsoneditor-field.jsoneditor-highlight-active:hover,
+        div.jsoneditor-value.jsoneditor-highlight-active,
+        div.jsoneditor-value.jsoneditor-highlight,
+        div.jsoneditor-value.jsoneditor-highlight-active:focus,
+        div.jsoneditor-value.jsoneditor-highlight-active:hover {
+            color: #272727;
+        }
+
+        div.jsoneditor-value.jsoneditor-null {
+            color: #50fa7b;
+        }
+
+        /*
 
         div.jsoneditor-value.jsoneditor-null {
           color: #8cbd7e;
         }
 
-        div.jsoneditor-value.jsoneditor-num {
-          color: #f54a3a;
-        }
 
         div.jsoneditor-tree button.jsoneditor-button:focus {
           background-color: #a79985;
@@ -253,6 +153,90 @@
             transform: translate(0, 0);
           }
         }
+         */
+
+        /* Dracula Theme v1.2.5
+ *
+ * https://github.com/dracula/highlightjs
+ *
+ * Copyright 2016-present, All rights reserved
+ *
+ * Code licensed under the MIT license
+ *
+ * @author Denis Ciccale <dciccale@gmail.com>
+ * @author Zeno Rocha <hi@zenorocha.com>
+ */
+
+        .hljs {
+            display: block;
+            overflow-x: auto;
+            padding: 0.5em;
+            background: #282a36;
+        }
+
+        .hljs-built_in,
+        .hljs-selector-tag,
+        .hljs-section,
+        .hljs-link {
+            color: #8be9fd;
+        }
+
+        .hljs-keyword {
+            color: #ff79c6;
+        }
+
+        .hljs,
+        .hljs-subst {
+            color: #f8f8f2;
+        }
+
+        .hljs-title {
+            color: #50fa7b;
+        }
+
+        .hljs-string,
+        .hljs-meta,
+        .hljs-name,
+        .hljs-type,
+        .hljs-attr,
+        .hljs-symbol,
+        .hljs-bullet,
+        .hljs-addition,
+        .hljs-variable,
+        .hljs-template-tag,
+        .hljs-template-variable {
+            color: #f1fa8c;
+        }
+
+        .hljs-comment,
+        .hljs-quote,
+        .hljs-deletion {
+            color: #6272a4;
+        }
+
+        .hljs-keyword,
+        .hljs-selector-tag,
+        .hljs-literal,
+        .hljs-title,
+        .hljs-section,
+        .hljs-doctag,
+        .hljs-type,
+        .hljs-name,
+        .hljs-strong {
+            font-weight: bold;
+        }
+
+        .hljs-literal,
+        .hljs-number {
+            color: #bd93f9;
+        }
+
+        .hljs-emphasis {
+            font-style: italic;
+        }
+
+
+
     </style>
   </head>
   <body>
@@ -260,14 +244,23 @@
     <div id="json"> {{ $json }} </div>
     <script>
         let container = document.getElementById('editor')
+        let options = {
+            name: 'response',
+            mode: 'view',
+            navigationBar: false,
+        }
         let content = JSON.parse(document.getElementById('json').innerHTML)
-        let editor = new JSONEditor(container, {mode: 'view', navigationBar: true})
+        let editor = new JSONEditor(container, options)
         editor.set(content)
         editor.expandAll()
         let title = document.createElement('div')
-        title.appendChild(document.createTextNode('metapi v1.4.0'))
+        title.appendChild(document.createTextNode('metapi'))
         title.className = 'title'
-        let menu = document.getElementsByClassName('jsoneditor-menu')[0].insertBefore(title, document.getElementsByClassName('jsoneditor-serach')[0])
+        let version = document.createElement('span')
+        version.className = 'version'
+        version.appendChild(document.createTextNode('v2.1.0'))
+        title.appendChild(version)
+        document.getElementsByClassName('jsoneditor-menu')[0].insertBefore(title, document.getElementsByClassName('jsoneditor-serach')[0])
     </script>
   </body>
 </html>
