@@ -195,15 +195,15 @@ trait MetApi
     /**
      * add an error to our error stack
      *
-     * @param string $title
+     * @param string $message
      * @param string $detail
      * @param integer $status
      * @param boolean $source
      * @return MetApi
      */
-    public function addError($title, $detail, $status = 400, $source = false)
+    public function addError($message, $detail, $status = 400, $source = false)
     {
-        $error = ['status' => $status, 'title' => $title,];
+        $error = ['status' => $status, 'message' => $message,];
 
         if ($source) {
             $error['source'] = $source;
@@ -219,7 +219,7 @@ trait MetApi
     /**
      * Render errors
      *
-     * @param string $key - shortkey or title of error
+     * @param string $key - shortkey or error message
      * @param string|array $replace - shortkey params
      * @param integer $status - HTTP status code to pass
      * @param bool $source
