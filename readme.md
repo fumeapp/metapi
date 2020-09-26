@@ -5,7 +5,7 @@
 
 > Own your endpoint
 
-metapi's main purpose is to help make sure your endpoint responses are consistent.  By using the built in helper functions like `->option()...->verify`, `->render()`, `->success()` and `->error()` they will all share the same JSONAPI-compatible standardized output reflecting the options available, parameters provided, and results.  There is also neat stuff like a rich view of the JSON with search when looked at via the browser.
+metapi's main purpose is to help make sure your endpoint responses are consistent.  By using the built in helper functions like `->option()...->verify`, `->render()`, `->success()` and `->error()` they will all share the same consistent standardized output reflecting the options available, parameters provided, and results.
 
 [![Latest Stable Version](https://poser.pugx.org/acidjazz/metapi/version.png)](https://packagist.org/packages/acidjazz/metapi)
 [![Total Downloads](https://poser.pugx.org/acidjazz/metapi/d/total.png)](https://packagist.org/packages/acidjazz/metapi)
