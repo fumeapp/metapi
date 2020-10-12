@@ -195,6 +195,10 @@ trait MetApi
      */
     public function getMeta()
     {
+        if (!($this->benchmark ?? null)) {
+            abort(500, 'Class ' . get_called_class() . ' need to call "this->metApiInit()" method inside constructor.');
+        }
+
         $this->meta['benchmark'] = microtime(true) - $this->benchmark;
         return $this->meta;
     }
