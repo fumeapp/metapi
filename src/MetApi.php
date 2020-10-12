@@ -30,9 +30,18 @@ trait MetApi
      */
     public function __construct(Request $request)
     {
+        $this->metApiInit($request);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function metApiInit(Request $request)
+    {
         $this->benchmark = microtime(true);
         $this->request = $request;
     }
+
 
     /**
      * Push an option to our query stack
