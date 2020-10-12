@@ -44,7 +44,7 @@ class MetApiTest extends BaseTest
         $this->assertEquals(
             [[
             'status' => 400,
-            'title' => 'name',
+            'message' => 'name',
             'detail' => 'The name field is required.',
             ]],
             $this->ma->errors
@@ -59,11 +59,11 @@ class MetApiTest extends BaseTest
 
     public function testAddError()
     {
-        $this->ma->error('title', 'detail', 420, true);
+        $this->ma->error('message', 'detail', 420, true);
         $this->assertEquals(
             [[
             "status" => 420,
-            "title" => "title",
+            "message" => "message",
             "source" => true,
             "detail" => "detail",
             ]],
