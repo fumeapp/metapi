@@ -26,20 +26,19 @@ trait MetApi
 
     /**
      * MetApi constructor.
-     * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->metApiInit($request);
+        $this->metApiInit();
     }
 
     /**
-     * @param Request $request
+     * Initialize benchmark & request variable
      */
-    public function metApiInit(Request $request)
+    public function metApiInit()
     {
         $this->benchmark = microtime(true);
-        $this->request = $request;
+        $this->request = request();
     }
 
 
@@ -149,7 +148,6 @@ trait MetApi
             } else {
                 return false;
             }
-
         }
 
         foreach ($this->request->all() as $key => $value) {
@@ -277,7 +275,6 @@ trait MetApi
      */
     public function render($data = false, $code = 200, $abort = false)
     {
-
         if (in_array($code, [400, 403, 500]) || count($this->errors) > 0) {
             $response['status'] = 'error';
             $response = array_merge($response, $data);
@@ -292,8 +289,10 @@ trait MetApi
             $json = json_encode($response, JSON_PRETTY_PRINT);
             $response = ['callback' => $this->request->query('callback'), 'json' => $json];
             $responsable = response(view('metapi::jsonp', $response), 200)->header('Content-type', 'text/javascript');
-        } elseif (strpos($this->request->header('accept'), 'text/html') !== false &&
-            config('app.debug') === true && $this->request->query('json') !== 'true') {
+        } elseif (
+            strpos($this->request->header('accept'), 'text/html') !== false &&
+            config('app.debug') === true && $this->request->query('json') !== 'true'
+        ) {
             $responsable = response(view('metapi::json', ['json' => json_encode($response, true)]), $code);
         } else {
             $responsable = response()->json($response, $code, [], JSON_PRETTY_PRINT);
