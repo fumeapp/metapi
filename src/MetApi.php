@@ -255,7 +255,8 @@ trait MetApi
     /**
      * Render success
      * @param string
-     * @param array
+     * @param array $replace
+     * @param array $data
      * @return mixed
      */
     public function success($message = 'Successful', $replace = [], $data = [])
@@ -267,6 +268,24 @@ trait MetApi
             'data' => $data,
         ], 200, true);
     }
+
+    /**
+     * Render success
+     * @param string
+     * @param array $replace
+     * @param array $data
+     * @return mixed
+     */
+    public function warn($message = 'Warning', $replace = [], $data = [])
+    {
+        return $this->render([
+            'success' => false,
+            'type' => 'warning',
+            'message' => __($message, $replace),
+            'data' => $data,
+        ], 200, true);
+    }
+
 
     /**
      * Final output
