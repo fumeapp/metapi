@@ -14,9 +14,9 @@
     }
   ],
   "require": {
-    "illuminate/support": "5.* || 6.* || 7.* || 8.*",
+    "illuminate/support": "7.* || 8.* || 9.*",
     "jasongrimes/paginator": "^1.0",
-    "php": "^7.4|^8.0",
+    "php": "^8.0|^8.1",
     "ext-json": "*"
   },
   "autoload": {
@@ -38,7 +38,7 @@
   },
   "require-dev": {
     "orchestra/testbench": "^5.2",
-    "phpunit/phpunit": "^9.1",
+    "phpunit/phpunit": "^9.5.10",
     "mockery/mockery": "^1.3"
   }
 }
