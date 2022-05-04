@@ -42,17 +42,32 @@ trait MetApi
         $this->request = $request;
     }
 
-
     /**
-     * Push an option to our query stack
+     * Push option to validation stack
+     * @see https://laravel.com/docs/9.x/validation#available-validation-rules
      *
-     * @param string $name Name of the option
-     * @param string|array $rules String or array of Validation Rules, see https://laravel.com/docs/7.x/validation#available-validation-rules
-     * @return MetApi
+     * @param string $name
+     * @param array|string $rules
+     * @param array $messages<string, string>
+     * @return Controller
      */
-    public function option($name, $rules)
+    public function option(string $name, array|string $rules, array $messages = []): self
     {
-        $this->query['options'][$name] = $rules;
+        $this->query['options']['rules'][$name] = $rules;
+
+        if (! empty($messages)) {
+            $colMessages = array_map(
+                fn ($message, $key) => [$name . '.' . $key => $message],
+                $messages,
+                array_keys($messages)
+            );
+
+            $this->query['options']['messages'] = array_merge(
+                $this->query['options']['messages'] ?? [],
+                ...$colMessages
+            );
+        }
+
         return $this;
     }
 
@@ -135,7 +150,7 @@ trait MetApi
     public function verify($abort = true)
     {
 
-        $validate = Validator::make($this->request->all(), $this->query['options']);
+        $validate = Validator::make($this->request->all(), $this->query['options']['rules'], $this->query['options']['messages'] ?? []);
 
         if ($validate->fails()) {
             foreach ($validate->errors()->toArray() as $key => $value) {
@@ -153,7 +168,7 @@ trait MetApi
         }
 
         foreach ($this->request->all() as $key => $value) {
-            if (isset($this->query['options'][$key])) {
+            if (isset($this->query['options']['rules'][$key])) {
                 if ($this->isFile($value)) {
                     $value = (array)$value;
                 }
@@ -303,7 +318,7 @@ trait MetApi
         } else {
             $response['status'] = 'success';
             $response = array_merge($response, $this->getMeta());
-            $response['query'] = $this->query;
+            $response['query'] = $this->normalizeQuery($this->query);
             $response['data'] = $data;
         }
 
@@ -323,5 +338,28 @@ trait MetApi
         }
 
         return $responsable;
+    }
+
+    /**
+     * Normalize query metadata
+     *
+     * @param array $query
+     * @return array
+     */
+    private function normalizeQuery(array $query): array
+    {
+        $output = [];
+        $params = $query['params'] ?? [];
+        $options = [];
+        $rules = $query['options']['rules'] ?? [];
+
+        foreach ($rules as $key => $value) {
+            $options[$key] = is_array($value) ? $value : explode('|', $value);
+        }
+
+        $output['options'] = $options;
+        $output['params'] = $params;
+
+        return $output;
     }
 }
