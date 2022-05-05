@@ -281,7 +281,7 @@ trait MetApi
             'type' => 'success',
             'message' => __($message, $replace),
             'data' => $data,
-        ], 200, true);
+        ], 200);
     }
 
     /**
@@ -298,7 +298,7 @@ trait MetApi
             'type' => 'warning',
             'message' => __($message, $replace),
             'data' => $data,
-        ], 200, true);
+        ], 200);
     }
 
 
