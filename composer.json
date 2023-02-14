@@ -4,7 +4,10 @@
   "description": "Laravel API helpers",
   "license": "MIT",
   "keywords": [
-    "Laravel", "API", "Pagination", "PHP"
+    "Laravel",
+    "API",
+    "Pagination",
+    "PHP"
   ],
   "homepage": "https://github.com/acidjazz/metapi",
   "authors": [
@@ -14,10 +17,15 @@
     }
   ],
   "require": {
-    "illuminate/support": "7.* || 8.* || 9.*",
+    "illuminate/support": "9.*|10.*",
     "jasongrimes/paginator": "^1.0",
-    "php": "^8.0|^8.1",
+    "php": "^8.1",
     "ext-json": "*"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^7.0|^8.0",
+    "phpunit/phpunit": "^9.5|^10.0",
+    "mockery/mockery": "^1.4.4"
   },
   "autoload": {
     "psr-4": {
@@ -35,10 +43,5 @@
         "acidjazz\\metapi\\ServiceProvider"
       ]
     }
-  },
-  "require-dev": {
-    "orchestra/testbench": "^5.2",
-    "phpunit/phpunit": "^9.5.10",
-    "mockery/mockery": "^1.3"
   }
 }
