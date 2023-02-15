@@ -49,6 +49,7 @@ trait MetApi
      * @param string $name
      * @param array|string $rules
      * @param array $messages<string, string>
+     * @param string $customAttribute
      * @return Controller
      */
     public function option(string $name, array|string $rules, array $messages = [], string $customAttribute = null): self
