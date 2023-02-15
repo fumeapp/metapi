@@ -49,9 +49,10 @@ trait MetApi
      * @param string $name
      * @param array|string $rules
      * @param array $messages<string, string>
+     * @param string $customAttribute
      * @return Controller
      */
-    public function option(string $name, array|string $rules, array $messages = []): self
+    public function option(string $name, array|string $rules, array $messages = [], string $customAttribute = null): self
     {
         $this->query['options']['rules'][$name] = $rules;
 
@@ -66,6 +67,13 @@ trait MetApi
                 $this->query['options']['messages'] ?? [],
                 ...$colMessages
             );
+        }
+
+        if ($customAttribute) {
+            if (!array_key_exists('customAttributes', $this->query['options'])) {
+                $this->query['options']['customAttributes'] = [];
+            }
+            $this->query['options']['customAttributes'][$name] = $customAttribute;
         }
 
         return $this;
@@ -150,7 +158,7 @@ trait MetApi
     public function verify($abort = true)
     {
 
-        $validate = Validator::make($this->request->all(), $this->query['options']['rules'], $this->query['options']['messages'] ?? []);
+        $validate = Validator::make($this->request->all(), $this->query['options']['rules'], $this->query['options']['messages'] ?? [], $this->query['options']['customAttributes'] ?? []);
 
         if ($validate->fails()) {
             foreach ($validate->errors()->toArray() as $key => $value) {

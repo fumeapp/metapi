@@ -40,10 +40,10 @@ Add the trait
 use acidjazz\metapi\MetApi;
 class Controller
 {
-    use Metapi;  
+    use Metapi;
 ```
 
-## Examples 
+## Examples
 
 ```php
 <?php
@@ -112,3 +112,41 @@ bob({
         {
 ```
 
+**Add [custom attributes](https://laravel.com/docs/9.x/validation#specifying-custom-attribute-values) to validation.**
+
+```php
+    public function send(Request $request)
+    {
+        $this->option('contact.email', 'required|email', [], 'Email Address')
+            ->option('contact.name', 'required|string', [], 'Firstname')
+            ->option('contact.surname', 'required|string', [], 'Lastname')
+            ->verify();
+        ...
+        $this->render($results);
+    }
+```
+
+`POST /send`
+
+```json
+{
+    "status": "error",
+    "errors": [
+        {
+            "status": 400,
+            "message": "contact.email",
+            "detail": "Email Address is a required field."
+        },
+        {
+            "status": 400,
+            "message": "contact.name",
+            "detail": "Firstname is a required field."
+        },
+        {
+            "status": 400,
+            "message": "contact.surname",
+            "detail": "Lastname is a required field."
+        }
+    ]
+}
+```
