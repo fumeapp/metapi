@@ -1,47 +1,47 @@
 {
-  "name": "acidjazz/metapi",
-  "type": "library",
-  "description": "Laravel API helpers",
-  "license": "MIT",
-  "keywords": [
-    "Laravel",
-    "API",
-    "Pagination",
-    "PHP"
-  ],
-  "homepage": "https://github.com/acidjazz/metapi",
-  "authors": [
-    {
-      "name": "Kevin Olson",
-      "email": "acidjazz@gmail.com"
+    "name": "acidjazz/metapi",
+    "type": "library",
+    "description": "Laravel API helpers",
+    "license": "MIT",
+    "keywords": [
+        "Laravel",
+        "API",
+        "Pagination",
+        "PHP"
+    ],
+    "homepage": "https://github.com/acidjazz/metapi",
+    "authors": [
+        {
+            "name": "Kevin Olson",
+            "email": "acidjazz@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "9.*|10.*|^11.0",
+        "jasongrimes/paginator": "^1.0",
+        "php": "^8.1",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.0|^8.0|^9.0",
+        "phpunit/phpunit": "^9.5|^10.0",
+        "mockery/mockery": "^1.4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "acidjazz\\metapi\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "acidjazz\\metapi\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "acidjazz\\metapi\\ServiceProvider"
+            ]
+        }
     }
-  ],
-  "require": {
-    "illuminate/support": "9.*|10.*",
-    "jasongrimes/paginator": "^1.0",
-    "php": "^8.1",
-    "ext-json": "*"
-  },
-  "require-dev": {
-    "orchestra/testbench": "^7.0|^8.0",
-    "phpunit/phpunit": "^9.5|^10.0",
-    "mockery/mockery": "^1.4.4"
-  },
-  "autoload": {
-    "psr-4": {
-      "acidjazz\\metapi\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "acidjazz\\metapi\\Tests\\": "tests"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "acidjazz\\metapi\\ServiceProvider"
-      ]
-    }
-  }
 }
